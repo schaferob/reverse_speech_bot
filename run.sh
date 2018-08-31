@@ -11,4 +11,4 @@ export $(grep -v '^#' ${env_vars_filename} | xargs)
 
 docker-compose build && docker-compose up -d --no-deps && docker-compose logs bot
 #unset variables at end to not pollute local space
-unset $(grep -v '^#' ${env_vars_filename} | xargs)
+#unset $(grep -v '^#' ${env_vars_filename} | xargs)
