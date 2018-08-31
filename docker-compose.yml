@@ -3,8 +3,6 @@ services:
   bot:
     build: .
     command: python3 bot.py
-    ports:
-      - "5000:5000"
     environment:
       BOT_TOKEN : "${BOT_TOKEN}"
       LOG_LEVEL: "${LOG_LEVEL}"
