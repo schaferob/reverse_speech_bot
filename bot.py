@@ -53,9 +53,9 @@ def echo(bot, update):
     mp3_filename = f'{voice_dir}/voice-{voice_key}.mp3'
     wav_filename_reversed = f'{voice_dir}/voice_reversed.wav'
     newFile.download(ogg_filename)
-    print(call(['ffmpeg','-y', '-i',ogg_filename,wav_filename]))
-    print(call(['sox', wav_filename, wav_filename_reversed,'reverse']))
-    print(call(['ffmpeg','-y', '-i',wav_filename_reversed,mp3_filename]))
+    logging.debug(call(['ffmpeg','-y', '-i',ogg_filename,wav_filename]))
+    logging.debug(call(['sox', wav_filename, wav_filename_reversed,'reverse']))
+    logging.debug(call(['ffmpeg','-y', '-i',wav_filename_reversed,mp3_filename]))
     #bot.send_message(chat_id=update.message.chat_id, text="Thanks for the audio clip. Soon I'll respond.")
     bot.send_audio(chat_id=update.message.chat_id, audio=open(mp3_filename, 'rb'))
 
