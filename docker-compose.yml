@@ -6,3 +6,5 @@ services:
     environment:
       BOT_TOKEN : "${BOT_TOKEN}"
       LOG_LEVEL: "${LOG_LEVEL}"
+    volumes:
+     - .:/code
