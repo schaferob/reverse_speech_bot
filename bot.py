@@ -22,7 +22,7 @@ from telegram.ext import Updater
 import sys
 import redis
 cache = redis.Redis(host='redis', port=6379)
-DEFAULT_AUDIO_OUTPUT_FORMAT = "ogg"
+DEFAULT_AUDIO_OUTPUT_FORMAT = "mp3"
 AVAILABLE_OUTPUT_FORMATS = ["ogg","wav","mp3"]
 
 from redis_helpers import *
