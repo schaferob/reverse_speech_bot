@@ -49,10 +49,6 @@ def echo(bot, update):
     #bot.send_message(chat_id=update.message.chat_id, text="Thanks for the audio clip. Soon I'll respond.")
     bot.send_audio(chat_id=update.message.chat_id, audio=open(output_filename, 'rb'))
 
-
-
-
-
 def main():
     BOT_TOKEN = os.environ.get("BOT_TOKEN")
     logging.info(f"Bot Token: {BOT_TOKEN}")
