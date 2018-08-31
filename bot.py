@@ -39,14 +39,24 @@ def echo(bot, update):
     print(f"File id: {file_id}")
     newFile = bot.get_file(file_id)
     print(f"New file: {newFile}")
-    #we use message_id to namespace
-    message_id = str(update.message.message_id)
+    #we use voice_key to namespace
+    first_name = update.message.from_user.first_name
+    voice_key = None
+    if first_name is not None:
+        last_name = update.message.from_user.last_name
+        if last_name is not None:
+            voice_key = f"{first_name}_{last_name}"
+        else:
+            voice_key = f"{first_name}"
+    else:
+        voice_key = str(update.message.from_user.id)
+    
     voice_dir = "audio_assets"
     os.makedirs(voice_dir, exist_ok=True)
 
-    ogg_filename = f'{voice_dir}/voice-{message_id}.ogg'
-    wav_filename = f'{voice_dir}/voice-{message_id}.wav'
-    mp3_filename = f'{voice_dir}/voice-{message_id}.mp3'
+    ogg_filename = f'{voice_dir}/voice-{voice_key}.ogg'
+    wav_filename = f'{voice_dir}/voice-{voice_key}.wav'
+    mp3_filename = f'{voice_dir}/voice-{voice_key}.mp3'
     wav_filename_reversed = f'{voice_dir}/voice_reversed.wav'
     newFile.download(ogg_filename)
     print(call(['ffmpeg','-y', '-i',ogg_filename,wav_filename]))
