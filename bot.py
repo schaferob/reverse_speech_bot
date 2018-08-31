@@ -22,7 +22,7 @@ logging.basicConfig(level=LOG_LEVEL,
 from telegram.ext import Updater
 import sys
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
-print(BOT_TOKEN)
+logging.info(f"Bot Token: {BOT_TOKEN}")
 if BOT_TOKEN is '':
     sys.exit(0)
 
@@ -39,10 +39,15 @@ def echo(bot, update):
     print(f"File id: {file_id}")
     newFile = bot.get_file(file_id)
     print(f"New file: {newFile}")
-    ogg_filename = 'voice.ogg'
-    wav_filename = 'voice.wav'
-    mp3_filename = 'voice.mp3'
-    wav_filename_reversed = 'voice_reversed.wav'
+    #we use message_id to namespace
+    message_id = str(update.message.message_id)
+    voice_dir = "audio_assets"
+    os.makedirs(voice_dir, exist_ok=True)
+
+    ogg_filename = f'{voice_dir}/voice-{message_id}.ogg'
+    wav_filename = f'{voice_dir}/voice-{message_id}.wav'
+    mp3_filename = f'{voice_dir}/voice-{message_id}.mp3'
+    wav_filename_reversed = f'{voice_dir}/voice_reversed.wav'
     newFile.download(ogg_filename)
     print(call(['ffmpeg','-y', '-i',ogg_filename,wav_filename]))
     print(call(['sox', wav_filename, wav_filename_reversed,'reverse']))

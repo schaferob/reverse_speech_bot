@@ -1,4 +1,5 @@
 github
 github.pub
-test_env_vars.sh
+./test_env_vars.sh
 .vscode
+audio_assets
