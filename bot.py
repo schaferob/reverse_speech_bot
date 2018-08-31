@@ -19,10 +19,11 @@ logging.basicConfig(level=logging.DEBUG,
 from telegram.ext import Updater
 import sys
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
+print(BOT_TOKEN)
 if BOT_TOKEN is '':
     sys.exit(0)
 
-updater = Updater(token='TOKEN')
+updater = Updater(token=BOT_TOKEN)
 dispatcher = updater.dispatcher
 
 def start(bot, update):
@@ -32,4 +33,5 @@ start_handler = CommandHandler('start', start)
 dispatcher.add_handler(start_handler)
 print('test')
 updater.start_polling()
+updater.idle()
 
