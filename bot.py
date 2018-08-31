@@ -6,7 +6,7 @@ import logging
 from subprocess import call
 
 
-
+import logging
 log_level_env = os.environ.get("LOG_LEVEL")
 LOG_LEVEL = None
 if log_level_env == "debug":
@@ -15,9 +15,8 @@ elif log_level_env == "info":
     LOG_LEVEL=logging.INFO
 else:
     LOG_LEVEL=logging.INFO
-LOG_LEVEL=logging.INFO
-import logging
-logging.basicConfig(level=logging.DEBUG,
+
+logging.basicConfig(level=LOG_LEVEL,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 from telegram.ext import Updater
