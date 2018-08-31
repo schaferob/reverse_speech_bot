@@ -1,5 +1,3 @@
 # Reverse speech bot
 
-It reverses audio clips sent to it.
-
-This is a telegram bot.
+A telegram bot that reverses voice notes. Bot can be be found at t.me/ReverseSpeechBot
