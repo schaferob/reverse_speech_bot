@@ -36,12 +36,13 @@ def echo(bot, update):
         bot.send_message(chat_id=update.message.chat_id, text="Send me an audio clip!")
         return
     file_id = update.message.voice.file_id
-    print(f"File id: {file_id}")
+    logging.debug(f"File id: {file_id}")
     newFile = bot.get_file(file_id)
-    print(f"New file: {newFile}")
+    logging.debug(f"New file: {newFile}")
     #we use voice_key to namespace
-    first_name = update.message.from_user.first_name
     voice_key = None
+    
+    first_name = update.message.from_user.first_name
     if first_name is not None:
         last_name = update.message.from_user.last_name
         if last_name is not None:
