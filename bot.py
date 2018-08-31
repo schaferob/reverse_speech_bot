@@ -33,31 +33,21 @@ def echo(bot, update):
     newFile = bot.get_file(file_id)
     logging.debug(f"New file: {newFile}")
     #we use voice_key to namespace
-    voice_key = None
-    
-    first_name = update.message.from_user.first_name
-    if first_name is not None:
-        last_name = update.message.from_user.last_name
-        if last_name is not None:
-            voice_key = f"{first_name}_{last_name}"
-        else:
-            voice_key = f"{first_name}"
-    else:
-        voice_key = str(update.message.from_user.id)
-    
+    voice_key = f"{str(update.message.from_user.id)}_{str(update.message.chat_id)}"
+    logging.info(f"voice_key: {voice_key}")
     voice_dir = "audio_assets"
     os.makedirs(voice_dir, exist_ok=True)
 
     ogg_filename = f'{voice_dir}/voice-{voice_key}.ogg'
     wav_filename = f'{voice_dir}/voice-{voice_key}.wav'
-    mp3_filename = f'{voice_dir}/voice-{voice_key}.mp3'
     wav_filename_reversed = f'{voice_dir}/voice_reversed.wav'
-    newFile.download(ogg_filename)
+    newFile.download(ogg_filename)  
     logging.debug(call(['ffmpeg','-y', '-i',ogg_filename,wav_filename]))
     logging.debug(call(['sox', wav_filename, wav_filename_reversed,'reverse']))
-    logging.debug(call(['ffmpeg','-y', '-i',wav_filename_reversed,mp3_filename]))
+    output_filename = ogg_filename
+    logging.debug(call(['ffmpeg','-y', '-i',wav_filename_reversed,output_filename]))
     #bot.send_message(chat_id=update.message.chat_id, text="Thanks for the audio clip. Soon I'll respond.")
-    bot.send_audio(chat_id=update.message.chat_id, audio=open(mp3_filename, 'rb'))
+    bot.send_audio(chat_id=update.message.chat_id, audio=open(output_filename, 'rb'))
 
 
 
