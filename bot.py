@@ -5,7 +5,6 @@ import logging
 #for calling ffmpeg and sox
 from subprocess import call
 
-
 import logging
 log_level_env = os.environ.get("LOG_LEVEL")
 LOG_LEVEL = None
@@ -21,13 +20,7 @@ logging.basicConfig(level=LOG_LEVEL,
 
 from telegram.ext import Updater
 import sys
-BOT_TOKEN = os.environ.get("BOT_TOKEN")
-logging.info(f"Bot Token: {BOT_TOKEN}")
-if BOT_TOKEN is '':
-    sys.exit(0)
 
-updater = Updater(token=BOT_TOKEN)
-dispatcher = updater.dispatcher
 
 def start(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text="I'm a bot, please talk to me!")
@@ -66,15 +59,28 @@ def echo(bot, update):
     #bot.send_message(chat_id=update.message.chat_id, text="Thanks for the audio clip. Soon I'll respond.")
     bot.send_audio(chat_id=update.message.chat_id, audio=open(mp3_filename, 'rb'))
 
-start_handler = CommandHandler('start', start)
-dispatcher.add_handler(start_handler)
 
-from telegram.ext import MessageHandler, Filters
 
-echo_handler = MessageHandler(Filters.all, echo)
-dispatcher.add_handler(echo_handler)
 
-print('test')
-updater.start_polling()
-updater.idle()
 
+def main():
+    BOT_TOKEN = os.environ.get("BOT_TOKEN")
+    logging.info(f"Bot Token: {BOT_TOKEN}")
+    if BOT_TOKEN is '':
+        sys.exit(0)
+
+    updater = Updater(token=BOT_TOKEN)
+    dispatcher = updater.dispatcher
+
+    echo_handler = MessageHandler(Filters.all, echo)
+    dispatcher.add_handler(echo_handler)
+
+    start_handler = CommandHandler('start', start)
+    dispatcher.add_handler(start_handler)
+
+    logging.info("Start polling")
+    updater.start_polling()
+    updater.idle()
+
+if __name__ == "__main__":
+    main()
