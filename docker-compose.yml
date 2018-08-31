@@ -8,3 +8,6 @@ services:
       LOG_LEVEL: "${LOG_LEVEL}"
     volumes:
      - .:/code
+  #TODO: consider adding bot depends on redis and then --no-deps in the dev ru.sh
+  redis:
+    image: "redis:alpine"
