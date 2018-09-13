@@ -22,8 +22,8 @@ from telegram.ext import Updater
 import sys
 import redis
 cache = redis.Redis(host='redis', port=6379)
-DEFAULT_AUDIO_OUTPUT_FORMAT = "mp3"
-AVAILABLE_OUTPUT_FORMATS = ["ogg","wav","mp3"]
+DEFAULT_AUDIO_OUTPUT_FORMAT = "voice"
+AVAILABLE_OUTPUT_FORMATS = ["ogg","wav","mp3",'voice']
 
 from redis_helpers import *
 
@@ -35,6 +35,7 @@ def echo(bot, update):
         bot.send_message(chat_id=update.message.chat_id, text="Send me an audio clip!")
         return
     #TODO: add support for reading from audio instead of just voice
+    bot.send_chat_action(chat_id=update.message.chat_id, action=tg.ChatAction.UPLOAD_AUDIO)
     file_id = update.message.voice.file_id
     newFile = bot.get_file(file_id)
     
@@ -53,11 +54,18 @@ def echo(bot, update):
     logging.debug(call(['ffmpeg','-y', '-i',ogg_filename,wav_filename]))
     logging.debug(call(['sox', wav_filename, wav_filename_reversed,'reverse']))
     desired_output_format = get_output_for_user(update.message.from_user.id,cache)
-    output_filename = f"{base_filename}.{desired_output_format}" 
+    if desired_output_format == 'voice':
+        output_filename = f"{base_filename}.mp3" 
+    else:
+        output_filename = f"{base_filename}.{desired_output_format}" 
     logging.info(f"output_filname: {output_filename}")
     logging.debug(call(['ffmpeg','-y', '-i',wav_filename_reversed,output_filename]))
     #bot.send_message(chat_id=update.message.chat_id, text="Thanks for the audio clip. Soon I'll respond.")
-    bot.send_audio(chat_id=update.message.chat_id, audio=open(output_filename, 'rb'))
+    if desired_output_format == 'voice':
+        bot.send_voice(chat_id=update.message.chat_id, voice=open(output_filename, 'rb'))
+    else:
+        bot.send_audio(chat_id=update.message.chat_id, audio=open(output_filename, 'rb'))
+    
 
 
 def set_output_format(bot, update, args):

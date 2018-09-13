@@ -1,2 +1,2 @@
-setoutputformat - Set the output format for the audio. Options are ogg, wav, mp3.
-getoutputformat - Check which output format you have set
+setoutputformat - Set the output format for the audio. Options are ogg, wav, mp3, voice.
+getoutputformat - Check which output format you have set.
